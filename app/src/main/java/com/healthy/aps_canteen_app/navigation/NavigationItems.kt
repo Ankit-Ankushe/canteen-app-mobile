@@ -18,4 +18,5 @@ sealed class ApsCanteenNavItems(val route: String, val label: String, val icons:
 sealed class ApsCanteenRouteItems(val route: String, val label: String, val icons: ImageVector){
   object Login : NavigationItem("login","Login",Icons.Default.DateRange)
   object MenuItemDetails : NavigationItem("details","Menu",Icons.Default.DateRange)
+  object Payment : NavigationItem("payment","Payment",Icons.Default.DateRange)
 }

@@ -2,6 +2,7 @@ package com.healthy.aps_canteen_app.ui.screens
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,7 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,8 +32,13 @@ import com.healthy.aps_canteen_app.ui.theme.LightGreen
 import com.healthy.aps_canteen_app.ui.viewModel.CustomViewModel
 
 @Composable
-fun MenuItemsUI(customViewModel: CustomViewModel, navController: NavHostController, context: Context,menuList:List<MenuItem>){
+fun MenuItemsComponent(customViewModel: CustomViewModel, navController: NavHostController, context: Context,menuList:List<MenuItem>){
+  val appState by customViewModel._stateFlow.collectAsState()
 
+  fun onAddItemClicked(menu: MenuItem) {
+    customViewModel.addItemToCart(menu)
+    Toast.makeText(context, "Food added to plate!", Toast.LENGTH_SHORT).show()
+  }
   Column(
     modifier = Modifier
       .fillMaxWidth()
@@ -78,7 +83,9 @@ fun MenuItemsUI(customViewModel: CustomViewModel, navController: NavHostControll
             }
             Column(
               Modifier
-                .align(Alignment.Bottom)) {
+                .align(Alignment.Bottom)
+                .clickable {onAddItemClicked(menu)}
+            ) {
               Icon(imageVector = Icons.Rounded.AddBox, contentDescription = "Right Arrow", tint = DarkGreen, modifier = Modifier.size(45.dp))
             }
           }

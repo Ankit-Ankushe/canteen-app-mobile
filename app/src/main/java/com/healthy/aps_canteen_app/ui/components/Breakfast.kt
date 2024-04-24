@@ -11,5 +11,5 @@ import com.healthy.aps_canteen_app.ui.viewModel.CustomViewModel
 fun Breakfast(customViewModel: CustomViewModel, navController: NavHostController, context: Context){
   val appState by customViewModel._stateFlow.collectAsState()
 
-  MenuItemsUI(customViewModel, navController, context,appState.breakfastItems)
+  MenuItemsComponent(customViewModel, navController, context,appState.breakfastItems)
 }

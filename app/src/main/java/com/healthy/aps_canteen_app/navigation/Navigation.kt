@@ -20,10 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.healthy.aps_canteen_app.ui.screens.Dashboard
-import com.healthy.aps_canteen_app.ui.screens.History
-import com.healthy.aps_canteen_app.ui.screens.Login
-import com.healthy.aps_canteen_app.ui.screens.Plate
+import com.healthy.aps_canteen_app.ui.screens.*
 import com.healthy.aps_canteen_app.ui.theme.DarkGreen
 import com.healthy.aps_canteen_app.ui.viewModel.CustomViewModel
 import kotlinx.coroutines.launch
@@ -57,8 +54,8 @@ fun Navigation(
 
       if (currentRoute == "menu") {
         appTitle = "Menu"
-      }else if (currentRoute == "serviceCallForm2") {
-        appTitle = "Service Call"
+      }else if (currentRoute == "payment") {
+        appTitle = "Payment"
         navigationIcon = "Back"
       }
       AppBar(
@@ -127,7 +124,7 @@ fun Navigation(
                 if(it.route == "plate"){
                   Badge(modifier = Modifier.padding(30.dp,0.dp,0.dp,0.dp), backgroundColor = Color(android.graphics.Color.rgb(186, 27, 27))){
                     Text(
-                      text = "0",
+                      text = appState.plateItems.size.toString(),
                       fontSize = 16.sp,
                       fontWeight = FontWeight.Bold,
                       color = Color.White
@@ -164,7 +161,7 @@ fun NavigationController(
 
   NavHost(
     navController = navController,
-    startDestination =  ApsCanteenRouteItems.Login.route
+    startDestination =  ApsCanteenNavItems.Menu.route
   ) {
 
     composable(ApsCanteenRouteItems.Login.route) {
@@ -178,6 +175,9 @@ fun NavigationController(
     }
     composable(ApsCanteenNavItems.History.route) {
       History(customViewModel, navController, context)
+    }
+    composable(ApsCanteenRouteItems.Payment.route) {
+      PaymentScreen(customViewModel, navController, context)
     }
   }
 }

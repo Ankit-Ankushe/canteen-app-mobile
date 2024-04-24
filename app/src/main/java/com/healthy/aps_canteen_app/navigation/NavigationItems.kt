@@ -2,6 +2,7 @@ package com.healthy.aps_canteen_app.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.RestaurantMenu
 import androidx.compose.material.icons.filled.RoomService
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -11,6 +12,7 @@ sealed class NavigationItem(val route: String, val label:  String, val icons: Im
 sealed class ApsCanteenNavItems(val route: String, val label: String, val icons: ImageVector) {
   object Menu : NavigationItem("menu","Menu", Icons.Default.RestaurantMenu)
   object Plate : NavigationItem("plate","Plate", Icons.Default.RoomService)
+  object History : NavigationItem("history","History", Icons.Default.ReceiptLong)
 }
 
 sealed class ApsCanteenRouteItems(val route: String, val label: String, val icons: ImageVector){

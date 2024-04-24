@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.healthy.aps_canteen_app.ui.screens.Dashboard
+import com.healthy.aps_canteen_app.ui.screens.History
 import com.healthy.aps_canteen_app.ui.screens.Login
 import com.healthy.aps_canteen_app.ui.screens.Plate
 import com.healthy.aps_canteen_app.ui.theme.DarkGreen
@@ -44,7 +45,8 @@ fun Navigation(
 
   val items = listOf(
     ApsCanteenNavItems.Menu,
-    ApsCanteenNavItems.Plate
+    ApsCanteenNavItems.Plate,
+    ApsCanteenNavItems.History
   )
   var navigationIcon = "Menu"
 
@@ -72,7 +74,7 @@ fun Navigation(
     },
     bottomBar = {
       Log.d("current route", "$currentRoute")
-      if (currentRoute == "menu" || currentRoute == "plate") {
+      if (currentRoute == "menu" || currentRoute == "plate"|| currentRoute == "history") {
         BottomNavigation(
           backgroundColor = Color(android.graphics.Color.rgb(22, 36, 48)),
           modifier = Modifier
@@ -173,6 +175,9 @@ fun NavigationController(
     }
     composable(ApsCanteenNavItems.Plate.route) {
       Plate(customViewModel, navController,context)
+    }
+    composable(ApsCanteenNavItems.History.route) {
+      History(customViewModel, navController, context)
     }
   }
 }

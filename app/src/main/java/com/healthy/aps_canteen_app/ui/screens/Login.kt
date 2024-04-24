@@ -26,17 +26,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.healthy.aps_canteen_app.R
+import com.healthy.aps_canteen_app.ui.components.ShowAlertDialog
 import com.healthy.aps_canteen_app.ui.theme.DarkGreen
 import com.healthy.aps_canteen_app.ui.theme.LightGreen
 import com.healthy.aps_canteen_app.ui.viewModel.CustomViewModel
 
 @Composable
 fun Login(customViewModel: CustomViewModel, navController: NavHostController, context: Context){
-  val userName = remember { mutableStateOf("") }
-  val password = remember { mutableStateOf("") }
+  var userName by remember { mutableStateOf("") }
+  var password by remember { mutableStateOf("") }
   var passwordVisibility by remember { mutableStateOf(false) }
   var showPassword by remember { mutableStateOf(false) }
+  var showDialog by remember { mutableStateOf(false) }
+  var (alertMessage,setAlertMessage) = remember() { mutableStateOf("") }
 
+
+  fun onLoginClicked(){
+    customViewModel.validateUser(userName,password){
+      if(it){
+        navController.navigate("menu")
+      }else {
+        showDialog = true
+        setAlertMessage("Invalid username or password")
+      }
+    }
+  }
+
+  if (showDialog) {
+    ShowAlertDialog(alertMessage, context, onDismiss = { showDialog = false },title = "ALERT")
+  }
 
   Column(
     modifier = Modifier
@@ -80,9 +98,9 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
           .border(1.dp, Color.White, RoundedCornerShape(10.dp))
           .background(Color.White, RoundedCornerShape(10.dp))
           .padding(10.dp),
-        value = userName.value,
+        value = userName,
         maxLines = 1,
-        onValueChange = { userName.value = it },
+        onValueChange = { userName = it },
         singleLine = false,
         cursorBrush = SolidColor(
           Color.Black
@@ -98,8 +116,8 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
       Spacer(modifier = Modifier.height(10.dp))
       Box {
         BasicTextField(
-          value = password.value,
-          onValueChange = { password.value = it },
+          value = password,
+          onValueChange = { password = it },
           modifier = Modifier
             .clip(RoundedCornerShape(10.dp))
             .fillMaxWidth()
@@ -116,8 +134,8 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
           contentAlignment = Alignment.CenterEnd
         ) {
           BasicTextField(
-            value = password.value,
-            onValueChange = { password.value = it },
+            value = password,
+            onValueChange = { password = it },
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(Color.White, RoundedCornerShape(10.dp)).padding(10.dp),
             maxLines = 1,
             cursorBrush = SolidColor(Color.Black),
@@ -142,7 +160,7 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
     Spacer(modifier = Modifier.height(20.dp))
     Column(modifier = Modifier.padding(20.dp, 0.dp)) {
       Button(
-        onClick = { navController.navigate("menu") }, modifier = Modifier
+        onClick = { onLoginClicked() }, modifier = Modifier
           .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(DarkGreen),
         shape = RoundedCornerShape(15.dp)

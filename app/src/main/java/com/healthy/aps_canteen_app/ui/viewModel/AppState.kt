@@ -3,6 +3,8 @@ package com.healthy.aps_canteen_app.ui.viewModel
 import com.healthy.aps_canteen_app.models.apiResponse.MenuItem
 
 data class AppState(
+  val userName : String = "",
+  val userId : Int = 0,
   val menuItems : List<MenuItem> = listOf(),
   val menuItemsCount :Int = 0,
   val breakfastCount : Int = 0,

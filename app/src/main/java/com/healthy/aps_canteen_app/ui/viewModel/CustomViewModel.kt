@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
 import com.healthy.aps_canteen_app.data.ApiInterfaceFactory
+import com.healthy.aps_canteen_app.data.ValidateUserRequestBody
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +17,34 @@ class CustomViewModel : ViewModel() {
   val _stateFlow: StateFlow<AppState> = _uiState.asStateFlow()
   private val retrofit = ApiInterfaceFactory.instance
   val gson = GsonBuilder().setPrettyPrinting().create()
+
+  fun validateUser(userName: String, password: String, callback: (Boolean) -> Unit){
+    viewModelScope.launch {
+      val requestBody = ValidateUserRequestBody(userName,password)
+      val res = retrofit.validateUser(requestBody)
+      val gson = GsonBuilder().setPrettyPrinting().create()
+      Log.d("login response",res.body().toString())
+
+      if (res.isSuccessful) {
+        val response = res.body()
+        if (response?.message == "Login successful!") {
+          _uiState.update { currentState: AppState ->
+            val newState = currentState.copy(
+              userName = response.userName,
+              userId = response.userId
+            )
+            newState
+          }
+          callback(true)
+        } else {
+          callback(false)
+        }
+      } else {
+        Log.d("error response", "${res.errorBody()}")
+        callback(false)
+      }
+    }
+  }
 
   fun fetchMenuItems(){
     _uiState.update { currentState: AppState ->

@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.healthy.aps_canteen_app.ui.screens.AppScreen
 import com.healthy.aps_canteen_app.ui.theme.ApscanteenappTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
       ApscanteenappTheme {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-          Greeting("Android")
+          AppScreen(context = this)
         }
       }
     }

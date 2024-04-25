@@ -64,6 +64,10 @@ fun Plate(customViewModel: CustomViewModel, navController: NavHostController, co
   LaunchedEffect(forceRender) {
     getTotalAmount()
   }
+  fun onProceedToPayClicked(){
+    customViewModel.setTotalAmount(totalAmount)
+    navController.navigate("payment")
+  }
   if(appState.plateItems.isEmpty()){
     EmptyPlate()
   }else{
@@ -164,7 +168,7 @@ fun Plate(customViewModel: CustomViewModel, navController: NavHostController, co
         }
         Divider(Modifier.padding(0.dp, 5.dp), Color.Gray)
         Button(
-          onClick = {navController.navigate("payment")  }, modifier = Modifier
+          onClick = {onProceedToPayClicked() }, modifier = Modifier
             .fillMaxWidth(),
           colors = ButtonDefaults.buttonColors(DarkGreen),
           shape = RoundedCornerShape(15.dp)

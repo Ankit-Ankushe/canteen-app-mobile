@@ -77,7 +77,7 @@ fun MenuItemsComponent(customViewModel: CustomViewModel, navController: NavHostC
             }
             Column(Modifier.fillMaxWidth(0.7f)) {
               Text(text = menu.name, fontSize = 18.sp, fontWeight = FontWeight.Bold,color = Color.Black)
-              Text(text = menu.shortDescription,fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color.Gray)
+              Text(text = menu.shortDescription,fontSize = 16.sp, fontWeight = FontWeight.Normal, color = Color.Gray)
               val rupeeSymbol = "\u20B9"
               Text(text = "$rupeeSymbol ${menu.price}",fontSize = 18.sp, fontWeight = FontWeight.Bold,color = Color.Black)
             }

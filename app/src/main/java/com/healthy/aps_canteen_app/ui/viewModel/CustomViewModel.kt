@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.GsonBuilder
 import com.healthy.aps_canteen_app.data.ApiInterfaceFactory
+import com.healthy.aps_canteen_app.data.PlaceOrderRequestBody
+import com.healthy.aps_canteen_app.data.PlateItemRequestBody
 import com.healthy.aps_canteen_app.data.ValidateUserRequestBody
 import com.healthy.aps_canteen_app.models.PlateItem
 import com.healthy.aps_canteen_app.models.apiResponse.MenuItem
@@ -133,6 +135,63 @@ class CustomViewModel : ViewModel() {
             plateItems = newPlateItems
           )
         }
+      }
+    }
+  }
+  fun setTotalAmount(amount : Int){
+    _uiState.update { currentState ->
+      currentState.copy(
+        totalAmount = amount
+      )
+    }
+  }
+  fun makePlateEmpty(){
+    _uiState.update { currentState ->
+      currentState.copy(
+        plateItems = listOf()
+      )
+    }
+  }
+  fun placeOrder(userId:Int,plate: List<PlateItem>, callback: (Boolean) -> Unit){
+    viewModelScope.launch {
+      val requestBody = PlaceOrderRequestBody(userId,plate)
+      Log.d("Request Body Place Order",requestBody.toString())
+
+      val res = retrofit.placeOrder(requestBody)
+      val gson = GsonBuilder().setPrettyPrinting().create()
+      Log.d("response place order",res.toString())
+
+      if (res.isSuccessful) {
+        val response = res.body()
+        Log.d("response place order",response.toString())
+        if (response!!.message == "Order placed successfully!") {
+          callback(true)
+        } else {
+          callback(false)
+        }
+      } else {
+        Log.d("error response", "${res.errorBody()}")
+        callback(false)
+      }
+    }
+  }
+
+  fun getOrderHistory(userId: Int){
+    viewModelScope.launch {
+
+      val res = retrofit.getOrderHistoryByUserId(userId)
+      val gson = GsonBuilder().setPrettyPrinting().create()
+
+      if (res.isSuccessful) {
+        val response = res.body()
+        Log.d("response place order",response.toString())
+        _uiState.update { currentState ->
+          currentState.copy(
+            orderHistory = response!!
+          )
+        }
+      } else {
+        Log.d("error response", "${res.errorBody()}")
       }
     }
   }

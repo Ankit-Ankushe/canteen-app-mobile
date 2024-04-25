@@ -161,7 +161,7 @@ fun NavigationController(
 
   NavHost(
     navController = navController,
-    startDestination =  ApsCanteenNavItems.Menu.route
+    startDestination =  ApsCanteenRouteItems.Login.route
   ) {
 
     composable(ApsCanteenRouteItems.Login.route) {

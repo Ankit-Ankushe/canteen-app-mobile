@@ -12,7 +12,7 @@ sealed class NavigationItem(val route: String, val label:  String, val icons: Im
 sealed class ApsCanteenNavItems(val route: String, val label: String, val icons: ImageVector) {
   object Menu : NavigationItem("menu","Menu", Icons.Default.RestaurantMenu)
   object Plate : NavigationItem("plate","Plate", Icons.Default.RoomService)
-  object History : NavigationItem("history","History", Icons.Default.ReceiptLong)
+  object History : NavigationItem("history","Order History", Icons.Default.ReceiptLong)
 }
 
 sealed class ApsCanteenRouteItems(val route: String, val label: String, val icons: ImageVector){

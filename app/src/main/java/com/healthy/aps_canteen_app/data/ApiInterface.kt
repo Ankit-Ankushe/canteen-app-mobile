@@ -1,12 +1,11 @@
 package com.healthy.aps_canteen_app.data
 
-import com.healthy.aps_canteen_app.models.apiResponse.GetMenuItemsApiResponse
-import com.healthy.aps_canteen_app.models.apiResponse.MenuItem
-import com.healthy.aps_canteen_app.models.apiResponse.ValidateUserApiResponse
+import com.healthy.aps_canteen_app.models.apiResponse.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import javax.inject.Singleton
 
 @Singleton
@@ -18,6 +17,14 @@ public interface ApiInterface {
 
   @GET("/menu")
   suspend fun getMenuItems():Response<List<MenuItem>>
+  @POST("/placeOrder")
+  suspend fun placeOrder(
+    @Body requestBody: PlaceOrderRequestBody
+  ):Response<PlaceOrderApiResponse>
+  @GET("/order-history/{userId}")
+  suspend fun getOrderHistoryByUserId(
+    @Path("userId") userId: Int,
+  ):Response<List<GetOrderHistoryApiResponse>>
 
 }
 

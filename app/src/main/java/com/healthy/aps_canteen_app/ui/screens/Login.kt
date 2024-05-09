@@ -27,23 +27,29 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.healthy.aps_canteen_app.R
 import com.healthy.aps_canteen_app.ui.components.ShowAlertDialog
+import com.healthy.aps_canteen_app.ui.components.ShowSuccessDialog
+import com.healthy.aps_canteen_app.ui.components.ShowWelcomeDialog
 import com.healthy.aps_canteen_app.ui.theme.DarkGreen
 import com.healthy.aps_canteen_app.ui.theme.LightGreen
 import com.healthy.aps_canteen_app.ui.viewModel.CustomViewModel
 
 @Composable
 fun Login(customViewModel: CustomViewModel, navController: NavHostController, context: Context){
+  val appState by customViewModel._stateFlow.collectAsState()
+
   var userName by remember { mutableStateOf("") }
   var password by remember { mutableStateOf("") }
   var passwordVisibility by remember { mutableStateOf(false) }
   var showPassword by remember { mutableStateOf(false) }
   var showDialog by remember { mutableStateOf(false) }
   var (alertMessage,setAlertMessage) = remember() { mutableStateOf("") }
+  var showInvite by remember { mutableStateOf(false) }
 
 
   fun onLoginClicked(){
     customViewModel.validateUser(userName,password){
       if(it){
+        showInvite = true
         navController.navigate("menu")
       }else {
         showDialog = true
@@ -52,6 +58,9 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
     }
   }
 
+  if(showInvite){
+    ShowWelcomeDialog(message = appState.inviteMessage , context = context , onDismiss = { showInvite = false })
+  }
   if (showDialog) {
     ShowAlertDialog(alertMessage, context, onDismiss = { showDialog = false },title = "ALERT")
   }
@@ -76,7 +85,8 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
         Image(
           painter = painterResource(id = R.drawable.apsdc_logo),
           contentDescription = null,
-          modifier = Modifier.align(Alignment.Center)
+          modifier = Modifier
+            .align(Alignment.Center)
             .align(Alignment.Center)
             .fillMaxSize(0.8f),
           contentScale = ContentScale.Fit,
@@ -136,7 +146,11 @@ fun Login(customViewModel: CustomViewModel, navController: NavHostController, co
           BasicTextField(
             value = password,
             onValueChange = { password = it },
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(Color.White, RoundedCornerShape(10.dp)).padding(10.dp),
+            modifier = Modifier
+              .fillMaxWidth()
+              .clip(RoundedCornerShape(10.dp))
+              .background(Color.White, RoundedCornerShape(10.dp))
+              .padding(10.dp),
             maxLines = 1,
             cursorBrush = SolidColor(Color.Black),
             textStyle = LocalTextStyle.current.copy(color = Color.Black, fontSize = 18.sp),
